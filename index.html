@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Moments - Generator de albume foto</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f9ff;
+            color: #315b8a;
+        }
+
+        header {
+            background: #fff;
+            padding: 24px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 3px 15px rgba(80, 130, 190, 0.12);
+        }
+
+        header h1 {
+            color: #4386d8;
+            font-size: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #52749c;
+            margin-left: 22px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #df7eaa;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #dceeff, #ffe3ef);
+            padding: 70px 8%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .hero-text {
+            max-width: 550px;
+        }
+
+        .hero h2 {
+            font-size: 44px;
+            line-height: 1.2;
+            color: #3679c9;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 17px;
+            line-height: 1.8;
+            color: #55769c;
+            margin-bottom: 25px;
+        }
+
+        .hero img {
+            width: 45%;
+            max-width: 500px;
+            height: 340px;
+            object-fit: cover;
+            border-radius: 26px;
+            box-shadow: 0 12px 30px rgba(70, 120, 180, 0.2);
+        }
+
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #5b9ce6, #e994bc);
+            color: white;
+            padding: 14px 25px;
+            border-radius: 12px;
+            text-decoration: none;
+            border: none;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: linear-gradient(135deg, #4386d8, #d878a7);
+        }
+
+        section {
+            padding: 62px 8%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 38px;
+        }
+
+        .section-title h2 {
+            font-size: 34px;
+            color: #4386d8;
+            margin-bottom: 13px;
+        }
+
+        .section-title p {
+            color: #7893b4;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .create-album {
+            background: linear-gradient(135deg, #fff, #fff5fa);
+            max-width: 700px;
+            margin: auto;
+            padding: 35px;
+            border-radius: 22px;
+            box-shadow: 0 8px 25px rgba(100, 150, 200, 0.12);
+            border: 1px solid #e7effb;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #477bb7;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 22px;
+            border: 1px solid #d5e5f8;
+            border-radius: 10px;
+            font-size: 15px;
+            background: #fafdff;
+            color: #315b8a;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #e994bc;
+        }
+
+        input[type="file"] {
+            background: #fff5fa;
+        }
+
+        .albums {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 28px;
+        }
+
+        .album-card {
+            background: white;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(90, 140, 190, 0.12);
+            border: 1px solid #e9f0fa;
+            transition: transform 0.3s;
+        }
+
+        .album-card:hover {
+            transform: translateY(-7px);
+        }
+
+        .album-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .album-info {
+            padding: 24px;
+        }
+
+        .album-info h3 {
+            color: #4386d8;
+            margin: 12px 0;
+            font-size: 22px;
+        }
+
+        .album-info p {
+            color: #7893b4;
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        .album-category {
+            display: inline-block;
+            background: #ffe6f1;
+            color: #d878a7;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+            margin-top: 30px;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+            border-radius: 18px;
+            box-shadow: 0 5px 15px rgba(90, 140, 190, 0.15);
+            transition: transform 0.3s;
+            display: block;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.04);
+        }
+
+        footer {
+            background: linear-gradient(135deg, #4386d8, #e994bc);
+            color: white;
+            text-align: center;
+            padding: 35px;
+            margin-top: 30px;
+        }
+
+        footer h2 {
+            margin-bottom: 12px;
+        }
+
+        footer p {
+            margin: 10px;
+        }
+
+        @media (max-width: 900px) {
+            .albums {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero img {
+                width: 100%;
+            }
+
+            .gallery {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            nav {
+                text-align: center;
+            }
+
+            nav a {
+                margin: 8px;
+                display: inline-block;
+            }
+
+            .hero h2 {
+                font-size: 31px;
+            }
+
+            .albums, .gallery {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 42px 5%;
+            }
+
+            .create-album {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Photo Moments</h1>
+
+        <nav>
+            <a href="#acasa">Acasă</a>
+            <a href="#creare">Creează album</a>
+            <a href="#albume">Albumele mele</a>
+            <a href="#galerie">Galerie</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" id="acasa">
+            <div class="hero-text">
+                <h2>Păstrează cele mai frumoase amintiri!</h2>
+
+                <p>
+                    Creează albume foto pentru fiecare ședință foto.
+                    Organizează fotografiile de la aniversări, călătorii,
+                    evenimente și momente speciale într-un singur loc.
+                </p>
+
+                <a href="#creare" class="button">Creează primul album</a>
+            </div>
+
+            <img
+                src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1000&q=85"
+                alt="Aparat foto profesional"
+            >
+        </section>
+
+        <section id="creare">
+            <div class="section-title">
+                <h2>Creează o ședință foto</h2>
+                <p>Completează informațiile și selectează fotografiile.</p>
+            </div>
+
+            <div class="create-album">
+                <form>
+                    <label for="numeAlbum">Denumirea albumului</label>
+
+                    <input
+                        type="text"
+                        id="numeAlbum"
+                        name="numeAlbum"
+                        placeholder="Ex: Ședință foto de familie"
+                        required
+                    >
+
+                    <label for="data">Data ședinței foto</label>
+                    <input type="date" id="data" name="data">
+
+                    <label for="categorie">Categoria albumului</label>
+
+                    <select id="categorie" name="categorie">
+                        <option value="familie">Familie</option>
+                        <option value="aniversare">Aniversare</option>
+                        <option value="nunta">Nuntă</option>
+                        <option value="calatorie">Călătorie</option>
+                        <option value="natura">Natură</option>
+                        <option value="alte">Altele</option>
+                    </select>
+
+                    <label for="fotografii">Selectează fotografiile</label>
+
+                    <input
+                        type="file"
+                        id="fotografii"
+                        name="fotografii"
+                        accept="image/*"
+                        multiple
+                    >
+
+                    <button type="button" class="button">Creează album</button>
+                </form>
+            </div>
+        </section>
+
+        <section id="albume">
+            <div class="section-title">
+                <h2>Albumele mele</h2>
+                <p>Descoperă albumele organizate după ședințele foto.</p>
+            </div>
+
+            <div class="albums">
+                <article class="album-card">
+                    <img
+                        src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=900&q=85"
+                        alt="Ședință foto de familie"
+                    >
+
+                    <div class="album-info">
+                        <span class="album-category">Familie</span>
+                        <h3>Momente în familie</h3>
+                        <p>Amintiri frumoase alături de cei dragi.</p>
+                        <p>📷 12 fotografii</p>
+                    </div>
+                </article>
+
+                <article class="album-card">
+                    <img
+                        src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=900&q=85"
+                        alt="Ședință foto de aniversare"
+                    >
+
+                    <div class="album-info">
+                        <span class="album-category">Aniversare</span>
+                        <h3>Ziua mea specială</h3>
+                        <p>Cele mai frumoase momente de la aniversare.</p>
+                        <p>📷 18 fotografii</p>
+                    </div>
+                </article>
+
+                <article class="album-card">
+                    <img
+                        src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=900&q=85"
+                        alt="Ședință foto în natură"
+                    >
+
+                    <div class="album-info">
+                        <span class="album-category">Călătorie</span>
+                        <h3>Vacanță în natură</h3>
+                        <p>Peisaje și amintiri din călătorii.</p>
+                        <p>📷 24 fotografii</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="galerie">
+            <div class="section-title">
+                <h2>Galeria momentelor frumoase</h2>
+                <p>Fiecare fotografie spune o poveste.</p>
+            </div>
+
+            <div class="gallery">
+                <img
+                    src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=900&q=85"
+                    alt="Buchet delicat de flori roz"
+                >
+
+                <img
+                    src="https://i.pinimg.com/736x/d4/25/04/d425044c7798108beb2b14ab452d9ff3.jpg"
+                    alt="Flori elegante în nuanțe pastelate"
+                >
+
+                <img
+                    src="https://i.pinimg.com/1200x/5c/62/b4/5c62b48d93b033ae8c9251687c46b799.jpg"
+                    alt="Fotografie romantică de nuntă"
+                >
+
+                <img
+                    src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=85"
+                    alt="Ședință foto de nuntă"
+                >
+
+                <img
+                    src="https://i.pinimg.com/1200x/dd/b6/4c/ddb64c143fe0d697d1d0c680609f6eea.jpg"
+                    alt="Momente speciale între prieteni"
+                >
+
+                <img
+                    src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=900&q=85"
+                    alt="Fotografie de familie"
+                >
+
+                <img
+                    src="https://i.pinimg.com/1200x/82/4e/77/824e77ec9b235e9b4d067bfd18ca369c.jpg"
+                    alt="Peisaj de dimineață"
+                >
+
+                <img
+                    src="https://i.pinimg.com/736x/07/1e/ab/071eab545d86c398b7f36ac229133bb3.jpg"
+                    alt="Peisaj spectaculos din călătorie"
+                >
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h2>Photo Moments</h2>
+        <p>Păstrează amintirile. Creează povești.</p>
+        <p>Proiect individual - Generator de albume foto</p>
+        <p>© 2026 Photo Moments</p>
+    </footer>
+</body>
+</html>
